@@ -57,7 +57,7 @@ class Handler extends \syncgw\interface\mysql\Handler implements DBextHandler {
 	const REFS        	 = 'References';					// file reference
 	const CID         	 = 'Category';						// record category
 
-	const PLUGIN      	 = [ 'roundcube_plugin', '9.18.78' ];
+	const PLUGIN      	 = [ 'roundcube_plugin', '9.18.80' ];
 
 	// constants from roundcube_select_for_sync.php
 	const MAIL_FULL   	 = 'M';								// full mail box
@@ -230,7 +230,6 @@ class Handler extends \syncgw\interface\mysql\Handler implements DBextHandler {
 
 					unset(self::$_obj->_hd[$hid]);
 	       	   		Log::getInstance()->logMsg(Log::WARN, 20302, Util::HID(Util::HID_ENAME, $hid));
-					Msg::InfoMsg('Enabling data store handler "'.$file.'"');
 				}
 	        }
 
