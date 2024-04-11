@@ -6,7 +6,7 @@ declare(strict_types=1);
  *
  *	@package	sync*gw
  *	@subpackage	RoundCube data base
- *	@copyright	(c) 2008 - 2023 Florian Daeumling, Germany. All right reserved
+ *	@copyright	(c) 2008 - 2024 Florian Daeumling, Germany. All right reserved
  * 	@license 	LGPL-3.0-or-later
  */
 
@@ -774,9 +774,12 @@ class Calendar {
 
 			   					// <InstanceId> original start time of recurrence event
 			   					// don't need to be converted, since it is already UTC time stamp
-								$int->addVar(fldExceptions::SUB_TAG[2], $v->format('U'));
-								// <Delete>
-		    					$int->addVar(fldExceptions::SUB_TAG[1]);
+		    					foreach ($v as $d) {
+									$int->addVar(fldExceptions::SUB_TAG[2], $d->format('U'));
+									// <Delete>
+			    					$int->addVar(fldExceptions::SUB_TAG[1]);
+			    					$int->restorePos($p);
+		    					}
 
 		    				} elseif ($k == 'EXCEPTIONS') {
 
@@ -801,7 +804,7 @@ class Calendar {
 		    					$this->_cnf->updVar(Config::DBG_LEVEL, $dl);
 		    				} else
 								$this->_msg->WarnMsg('+++ Undefined sub field ['.$k.']');
-		    			$int->restorePos($p);
+		    				$int->restorePos($p);
 		    			}
 	   		   		} else {
 
