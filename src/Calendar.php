@@ -774,12 +774,16 @@ class Calendar {
 
 			   					// <InstanceId> original start time of recurrence event
 			   					// don't need to be converted, since it is already UTC time stamp
-		    					foreach ($v as $d) {
-									$int->addVar(fldExceptions::SUB_TAG[2], $d->format('U'));
-									// <Delete>
-			    					$int->addVar(fldExceptions::SUB_TAG[1]);
-			    					$int->restorePos($p);
-		    					}
+			   					// fix calendar.php bug which return $v as boolean
+								if (is_object($v)) {
+
+									// fix calendar.php bug which provides EXDATE with minutes on secords
+									if ($v->format('is') == '0000') {
+										$int->addVar(fldExceptions::SUB_TAG[2], $v->format('U'));
+										$int->addVar(fldExceptions::SUB_TAG[1]);
+									}
+
+								}
 
 		    				} elseif ($k == 'EXCEPTIONS') {
 
@@ -804,6 +808,7 @@ class Calendar {
 		    					$this->_cnf->updVar(Config::DBG_LEVEL, $dl);
 		    				} else
 								$this->_msg->WarnMsg('+++ Undefined sub field ['.$k.']');
+
 		    				$int->restorePos($p);
 		    			}
 	   		   		} else {
