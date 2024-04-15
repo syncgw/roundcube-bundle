@@ -18,6 +18,7 @@ use syncgw\lib\DataStore;
 use syncgw\lib\ErrorHandler;
 use syncgw\lib\Log;
 use syncgw\lib\Msg;
+use syncgw\lib\User;
 use syncgw\lib\Util;
 use syncgw\lib\XML;
 use syncgw\document\field\fldSummary;
@@ -208,7 +209,7 @@ class Note {
 			if (!is_string($parm) || !self::_chkLoad($parm) || !($out = self::_swap2int($parm))) {
 
 				Log::getInstance()->logMsg(Log::WARN, 20311, is_string($parm) ? (substr($parm, 0, 1) == DataStore::TYP_DATA ?
-						  'note record' : 'notes group') : gettype($parm), $parm);
+						  'note record' : 'notes group') : gettype($parm), $parm, User::getInstance()->getVar('GUID'));
 				return false;
 			}
 			break;
@@ -233,7 +234,7 @@ class Note {
 			// no group found?
 			if ($parm->getVar('Type') == DataStore::TYP_DATA && !isset($this->_ids[$gid])) {
 
-				Log::getInstance()->logMsg(Log::WARN, 20315, $gid, 'notes group');
+				Log::getInstance()->logMsg(Log::WARN, 20315, $gid, 'notes group', User::getInstance()->getVar('GUID'));
 				return false;
 			}
 
@@ -241,7 +242,7 @@ class Note {
 			if (!($out = self::_add($parm))) {
 
 				Log::getInstance()->logMsg(Log::WARN, 20312, $parm->getVar('Type') == DataStore::TYP_DATA ?
-						  'note record' : 'notes group');
+						  'note record' : 'notes group', User::getInstance()->getVar('GUID'));
 				return false;
 			}
 	   		break;
@@ -254,7 +255,7 @@ class Note {
 			if (!self::_chkLoad($rid)) {
 
 				Log::getInstance()->logMsg(Log::WARN, 20313, substr($rid, 0, 1) == DataStore::TYP_DATA ?
-						  'note record' : 'notes group', $rid);
+						  'note record' : 'notes group', $rid, User::getInstance()->getVar('GUID'));
 				if ($this->_cnf->getVar(Config::DBG_LEVEL) == Config::DBG_TRACE)
 					Msg::ErrMsg('Update should work - please check if synchronization is turned on!');
 				return false;
@@ -265,7 +266,7 @@ class Note {
 				// is record editable?
 			   	!($this->_ids[$rid][Handler::ATTR] & fldAttribute::EDIT)) {
 
-				Log::getInstance()->logMsg(Log::WARN, 20315, 'notes group', $rid);
+				Log::getInstance()->logMsg(Log::WARN, 20315, 'notes group', $rid, User::getInstance()->getVar('GUID'));
 				return false;
 			}
 
@@ -273,7 +274,7 @@ class Note {
 			if (!($out = self::_upd($parm))) {
 
 				Log::getInstance()->logMsg(Log::WARN, 20313, substr($rid, 0, 1) == DataStore::TYP_DATA ?
-						  'note record' : 'notes group', $rid);
+						  'note record' : 'notes group', $rid, User::getInstance()->getVar('GUID'));
 				return false;
 			}
 			break;
@@ -284,13 +285,13 @@ class Note {
 			if (!self::_chkLoad($parm)) {
 
 				Log::getInstance()->logMsg(Log::WARN, 20314, substr($parm, 0, 1) == DataStore::TYP_DATA ?
-						  'note record' : 'notes group', $parm);
+						  'note record' : 'notes group', $parm, User::getInstance()->getVar('GUID'));
 				return false;
 			}
 
 			// does record exist?
 			if (!isset($this->_ids[$parm])) {
-				Log::getInstance()->logMsg(Log::WARN, 20315, $parm, 'notes group');
+				Log::getInstance()->logMsg(Log::WARN, 20315, $parm, 'notes group', User::getInstance()->getVar('GUID'));
 				return false;
 			}
 
@@ -298,7 +299,7 @@ class Note {
 			if (!($out = self::_del($parm))) {
 
 				Log::getInstance()->logMsg(Log::WARN, 20314, substr($parm, 0, 1) == DataStore::TYP_DATA ?
-						  'note record' : 'notes group', $parm);
+						  'note record' : 'notes group', $parm, User::getInstance()->getVar('GUID'));
 				return false;
 			}
 			break;

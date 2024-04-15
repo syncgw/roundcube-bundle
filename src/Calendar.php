@@ -332,7 +332,7 @@ class Calendar {
 			if (!is_string($parm) || !self::_chkLoad($parm) || !($out = self::_swap2int($parm))) {
 
 				Log::getInstance()->logMsg(Log::WARN, 20311, is_string($parm) ? (substr($parm, 0, 1) == DataStore::TYP_DATA ?
-						  'calendar record' : 'calendar') : gettype($parm), $parm);
+						  'calendar record' : 'calendar') : gettype($parm), $parm, User::getInstance()->getVar('GUID'));
 				return false;
 			}
 			break;
@@ -385,7 +385,7 @@ class Calendar {
 			if (!($out = self::_add($parm))) {
 
 				Log::getInstance()->logMsg(Log::WARN, 20312, $parm->getVar('Type') == DataStore::TYP_DATA ?
-						  'calendar record' : 'calendar');
+						  'calendar record' : 'calendar', User::getInstance()->getVar('GUID'));
 				return false;
 			}
 			break;
@@ -398,7 +398,7 @@ class Calendar {
 			if (!self::_chkLoad($rid)) {
 
 				Log::getInstance()->logMsg(Log::WARN, 20313, substr($rid, 0, 1) == DataStore::TYP_DATA ?
-						  'calendar record' : 'calendar', $rid);
+						  'calendar record' : 'calendar', $rid, User::getInstance()->getVar('GUID'));
 				if ($this->_cnf->getVar(Config::DBG_LEVEL) == Config::DBG_TRACE)
 					Msg::ErrMsg('Update should work - please check if synchronization is turned on!');
 				return false;
@@ -414,14 +414,14 @@ class Calendar {
 				// is group writable?^
 				!($this->_ids[$gid][Handler::ATTR] & fldAttribute::WRITE)) {
 
-				Log::getInstance()->logMsg(Log::WARN, 20315, $rid, 'calendar');
+				Log::getInstance()->logMsg(Log::WARN, 20315, $rid, 'calendar', User::getInstance()->getVar('GUID'));
 				return false;
 			}
 
 			// update external record
 			if (!($out = self::_upd($parm))) {
 				Log::getInstance()->logMsg(Log::WARN, 20313, substr($rid, 0, 1) == DataStore::TYP_DATA ?
-						  'calendar record' : 'calendar', $rid);
+						  'calendar record' : 'calendar', $rid, User::getInstance()->getVar('GUID'));
 				return false;
 			}
     		break;
@@ -431,7 +431,7 @@ class Calendar {
 			// be sure to check record is loaded
 			if (!self::_chkLoad($parm)) {
 				Log::getInstance()->logMsg(Log::WARN, 20314, substr($parm, 0, 1) == DataStore::TYP_DATA ?
-						  'calendar record' : 'calendar', $parm);
+						  'calendar record' : 'calendar', $parm, User::getInstance()->getVar('GUID'));
 				return false;
 			}
 
@@ -443,7 +443,7 @@ class Calendar {
 			   	(substr($parm, 0, 1) == DataStore::TYP_DATA &&
 			   			!($this->_ids[$this->_ids[$parm][Handler::GROUP]][Handler::ATTR] & fldAttribute::WRITE)))) {
 
-			   	Log::getInstance()->logMsg(Log::WARN, 20315, $parm, 'calendar');
+			   	Log::getInstance()->logMsg(Log::WARN, 20315, $parm, 'calendar', User::getInstance()->getVar('GUID'));
 				return false;
 			}
 
@@ -451,7 +451,7 @@ class Calendar {
 			if (!($out = self::_del($parm))) {
 
 				Log::getInstance()->logMsg(Log::WARN, 20314, substr($parm, 0, 1) == DataStore::TYP_DATA ?
-						  'calendar record' : 'calendar', $parm);
+						  'calendar record' : 'calendar', $parm, User::getInstance()->getVar('GUID'));
 				return false;
 			}
 			break;

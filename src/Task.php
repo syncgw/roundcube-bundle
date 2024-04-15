@@ -20,6 +20,7 @@ use syncgw\lib\ErrorHandler;
 use syncgw\lib\Log;
 use syncgw\lib\Msg;
 use syncgw\lib\Trace;
+use syncgw\lib\User;
 use syncgw\lib\Util;
 use syncgw\lib\XML;
 use libcalendaring;
@@ -300,7 +301,7 @@ class Task {
 			if (!is_string($parm) || !self::_chkLoad($parm) || !($out = self::_swap2int($parm))) {
 
 				Log::getInstance()->logMsg(Log::WARN, 20311, is_string($parm) ? (substr($parm, 0, 1) == DataStore::TYP_DATA ?
-						  'task record' : 'task list') : gettype($parm), $parm);
+						  'task record' : 'task list') : gettype($parm), $parm, User::getInstance()->getVar('GUID'));
 				return false;
 			}
 			break;
@@ -354,7 +355,7 @@ class Task {
 			if ($parm->getVar('Type') == DataStore::TYP_DATA && !isset($this->_ids[$gid])) {
 
 				Log::getInstance()->logMsg(Log::WARN, 20312, $parm->getVar('Type') == DataStore::TYP_DATA ?
-						  'task record' : 'task list');
+						  'task record' : 'task list', User::getInstance()->getVar('GUID'));
 				return false;
 			}
 
@@ -362,7 +363,7 @@ class Task {
 			if (!($out = self::_add($parm))) {
 
 				Log::getInstance()->logMsg(Log::WARN, 20312, $parm->getVar('Type') == DataStore::TYP_DATA ?
-						  'task record' : 'task list');
+						  'task record' : 'task list', User::getInstance()->getVar('GUID'));
 				return false;
 			}
 			break;
@@ -375,7 +376,7 @@ class Task {
 			if (!self::_chkLoad($rid)) {
 
 				Log::getInstance()->logMsg(Log::WARN, 20313, substr($rid, 0, 1) == DataStore::TYP_DATA ?
-						  'task record' : 'task list', $rid);
+						  'task record' : 'task list', $rid, User::getInstance()->getVar('GUID'));
 				if ($this->_cnf->getVar(Config::DBG_LEVEL) == Config::DBG_TRACE)
 					Msg::ErrMsg('Update should work - please check if synchronization is turned on!');
 				return false;
@@ -398,7 +399,7 @@ class Task {
 			if (!($out = self::_upd($parm))) {
 
 				Log::getInstance()->logMsg(Log::WARN, 20313, substr($rid, 0, 1) == DataStore::TYP_DATA ?
-						  'task record' : 'task list', $rid);
+						  'task record' : 'task list', $rid, User::getInstance()->getVar('GUID'));
 				return false;
 			}
     		break;
@@ -409,7 +410,7 @@ class Task {
 			if (!self::_chkLoad($parm)) {
 
 				Log::getInstance()->logMsg(Log::WARN, 20314, substr($parm, 0, 1) == DataStore::TYP_DATA ?
-						  'task record' : 'task list', $parm);
+						  'task record' : 'task list', $parm, User::getInstance()->getVar('GUID'));
 				return false;
 			}
 
@@ -429,7 +430,7 @@ class Task {
 			if (!($out = self::_del($parm))) {
 
 				Log::getInstance()->logMsg(Log::WARN, 20314, substr($parm, 0, 1) == DataStore::TYP_DATA ?
-						  'task record' : 'task list', $parm);
+						  'task record' : 'task list', $parm, User::getInstance()->getVar('GUID'));
 				return false;
 			}
 			break;

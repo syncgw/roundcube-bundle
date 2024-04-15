@@ -128,23 +128,23 @@ class Handler extends \syncgw\interface\mysql\Handler implements DBextHandler {
 					20301 => 'Cannot locate RoundCube file [%s]',
 			        20302 => 'Plugin \'%s\' not available - handler disabled',
 
-					// Error reading external contact record [R91919]
-					20311 => 'Error reading external %s [%s]',
-					// Error adding external address book
-					20312 => 'Error adding external %s',
-					// Error updating external contact record [R774]
-					20313 => 'Error updating external %s [%s]',
-					// Error deleting external address book [G383]
-					20314 => 'Error deleting external %s [%s]',
-					// Record [R774] in adress book is read-only
-					20315 => 'Record [%s] in %s is read-only',
-					20316 => 'RoundCube authorization failed for user (%s) (Error code: %d)',
+					// Error reading external contact record [R91919] for user [i329108_0-test]
+					20311 => 'Error reading external %s [%s] for user [%s]',
+					// Error adding external address book for user [i329108_0-test]
+					20312 => 'Error adding external %s for user [%s]',
+					// Error updating external contact record [R774] for user [i329108_0-test]
+					20313 => 'Error updating external %s [%s] for user [%s]',
+					// Error deleting external address book [G383] for user [i329108_0-test]
+					20314 => 'Error deleting external %s [%s] for user [%s]',
+					// Record [R774] in adress book is read-only for user [i329108_0-test]
+					20315 => 'Record [%s] in %s is read-only for user [%s]',
+					20316 => 'RoundCube authorization failed for user [%s] (Error code: %d)',
 					20317 => 'Record [%s] in %s not found - if you\'re debugging please check synchonization status in RoundCube',
 
 					// error messages
 					20350 => 'No %s enabled for synchronization [%s]',
 					20351 => 'MySQL error: %s in %s driver in line %d',
-					20352 => ' set_include_path() failed',
+					20352 => 'set_include_path() failed',
 			]);
 
 			// data base enabled?

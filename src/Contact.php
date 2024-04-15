@@ -20,6 +20,7 @@ use syncgw\lib\Encoding;
 use syncgw\lib\Log;
 use syncgw\lib\Msg;
 use syncgw\lib\Trace;
+use syncgw\lib\User;
 use syncgw\lib\Util;
 use syncgw\lib\XML;
 use rcube_contacts;
@@ -339,7 +340,7 @@ class Contact {
 
 				Log::getInstance()->logMsg(Log::WARN, 20311, is_string($parm) ?
 						  (substr($parm, 0, 1) == DataStore::TYP_DATA ? 'contact record' :
-						  'address book') : gettype($parm), $parm);
+						  'address book') : gettype($parm), $parm, User::getInstance()->getVar('GUID'));
 				return false;
 			}
 			break;
@@ -392,7 +393,7 @@ class Contact {
 			if (!($out = self::_add($parm)) || !self::_chkCat($out, $parm, self::C_NEW)) {
 
 				Log::getInstance()->logMsg(Log::WARN, 20312, $parm->getVar('Type') == DataStore::TYP_DATA ?
-						  'contact record' : 'address book');
+						  'contact record' : 'address book', User::getInstance()->getVar('GUID'));
 				return false;
 			}
 
@@ -406,7 +407,7 @@ class Contact {
 					// delete record
 					self::_del($out);
 					Log::getInstance()->logMsg(Log::WARN, 20312, $parm->getVar('Type') == DataStore::TYP_DATA ?
-							  'contact record' : 'address book');
+							  'contact record' : 'address book', User::getInstance()->getVar('GUID'));
 					return false;
 				}
 			}
@@ -420,7 +421,7 @@ class Contact {
 			if (!self::_chkLoad($rid)) {
 
 				Log::getInstance()->logMsg(Log::WARN, 20313, substr($rid, 0, 1) == DataStore::TYP_DATA ?
-						  'contact record' : 'address book', $rid);
+						  'contact record' : 'address book', $rid, User::getInstance()->getVar('GUID'));
 				if ($this->_cnf->getVar(Config::DBG_LEVEL) == Config::DBG_TRACE)
 					Msg::ErrMsg('Update should work - please check if synchronization is turned on!');
 				return false;
@@ -436,7 +437,7 @@ class Contact {
 				// is group writable?^
 				!($this->_ids[$gid][Handler::ATTR] & fldAttribute::WRITE)) {
 
-			   	Log::getInstance()->logMsg(Log::WARN, 20315, $rid, 'address book');
+			   	Log::getInstance()->logMsg(Log::WARN, 20315, $rid, 'address book', User::getInstance()->getVar('GUID'));
 				return false;
 			}
 
@@ -449,7 +450,7 @@ class Contact {
 				if (strpos(implode('|', array_keys($rec)), 'phone:') === false) {
 
 					Log::getInstance()->logMsg(Log::WARN, 20313, substr($rid, 0, 1) == DataStore::TYP_DATA ?
-							  'contact record' : 'address book', $rid);
+							  'contact record' : 'address book', $rid, User::getInstance()->getVar('GUID'));
 					return false;
 				}
 			}
@@ -458,7 +459,7 @@ class Contact {
 			if (!($out = self::_upd($parm)) || !self::_chkCat($rid, $parm, self::C_UPD)) {
 
 				Log::getInstance()->logMsg(Log::WARN, 20313, substr($rid, 0, 1) == DataStore::TYP_DATA ?
-						  'contact record' : 'address book', $rid);
+						  'contact record' : 'address book', $rid, User::getInstance()->getVar('GUID'));
 				return false;
 			}
 			break;
@@ -469,7 +470,7 @@ class Contact {
 			if (!self::_chkLoad($parm)) {
 
 				Log::getInstance()->logMsg(Log::WARN, 20314, substr($parm, 0, 1) == DataStore::TYP_DATA ?
-						  'contact record' : 'address book', $parm);
+						  'contact record' : 'address book', $parm, User::getInstance()->getVar('GUID'));
 				return false;
 			}
 
@@ -481,7 +482,7 @@ class Contact {
 			   	(substr($parm, 0, 1) == DataStore::TYP_DATA &&
 			   	!($this->_ids[$this->_ids[$parm][Handler::GROUP]][Handler::ATTR] & fldAttribute::WRITE)))) {
 
-			   	Log::getInstance()->logMsg(Log::WARN, 20315, $parm, 'adresss book');
+			   	Log::getInstance()->logMsg(Log::WARN, 20315, $parm, 'adresss book', User::getInstance()->getVar('GUID'));
 				return false;
 			}
 
@@ -489,7 +490,7 @@ class Contact {
 			if (!self::_chkCat($parm, null, self::C_DEL) || !($out = self::_del($parm))) {
 
 				Log::getInstance()->logMsg(Log::WARN, 20314, substr($parm, 0, 1) == DataStore::TYP_DATA ?
-						  'contact record' : 'address book', $parm);
+						  'contact record' : 'address book', $parm, User::getInstance()->getVar('GUID'));
 				return false;
 			}
 			break;
@@ -573,7 +574,7 @@ class Contact {
 
 			if (!$this->_hd->Retry) {
 
-				Log::getInstance()->logMsg(Log::WARN, 20311, 'list of adress books', $grp);
+				Log::getInstance()->logMsg(Log::WARN, 20311, 'list of adress books', $grp, User::getInstance()->getVar('GUID'));
                 return;
 			}
 
@@ -655,7 +656,7 @@ class Contact {
 
 			if (!$this->_hd->Retry) {
 
-           		Log::getInstance()->logMsg(Log::WARN, 20311, 'adress book', $grp);
+           		Log::getInstance()->logMsg(Log::WARN, 20311, 'adress book', $grp, User::getInstance()->getVar('GUID'));
                 continue;
 		    }
 
@@ -1249,7 +1250,7 @@ class Contact {
 
 				if (!$this->_hd->Retry) {
 
-				    Log::getInstance()->logMsg(Log::WARN, 20312, $nam, 'adress book');
+				    Log::getInstance()->logMsg(Log::WARN, 20312, $nam, 'adress book', User::getInstance()->getVar('GUID'));
 					return false;
 				}
 
@@ -1310,7 +1311,8 @@ class Contact {
 
 			if (!$this->_hd->Retry) {
 
-				Log::getInstance()->logMsg(Log::WARN, 20314, $this->_cats[$cat][Handler::NAME], 'adress book');
+				Log::getInstance()->logMsg(Log::WARN, 20314, $this->_cats[$cat][Handler::NAME], 'adress book',
+							User::getInstance()->getVar('GUID'));
 				return false;
 			}
 
