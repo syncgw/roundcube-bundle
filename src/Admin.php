@@ -71,7 +71,7 @@ class Admin extends \syncgw\interface\mysql\Admin implements DBAdmin {
 			return true;
 
 		// get application root directory
-		$path = '..';
+		$path = '../../..';
 		// check for hidden parameter
 		if ($c = $cnf->getVar(Config::RC_DIR))
 			$path = $c;
