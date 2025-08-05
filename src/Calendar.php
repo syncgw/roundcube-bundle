@@ -6,7 +6,7 @@ declare(strict_types=1);
  *
  *	@package	sync*gw
  *	@subpackage	RoundCube data base
- *	@copyright	(c) 2008 - 2024 Florian Daeumling, Germany. All right reserved
+ *	@copyright	(c) 2008 - 2025 Florian Daeumling, Germany. All right reserved
  * 	@license 	LGPL-3.0-or-later
  */
 
@@ -779,7 +779,7 @@ class Calendar {
 
 									// fix calendar.php bug which provides EXDATE with minutes on secords
 									if ($v->format('is') == '0000') {
-										$int->addVar(fldExceptions::SUB_TAG[2], $v->format('U'));
+										$int->addVar(fldExceptions::SUB_TAG[2], Util::mkTZOffset($v->format('U')));
 										$int->addVar(fldExceptions::SUB_TAG[1]);
 									}
 
@@ -1060,8 +1060,8 @@ class Calendar {
 							$int->restorePos($p);
 							// excluded dates
 							$rec[$key]['EXDATE'][] = new \DateTime(gmdate(Config::UTC_TIME,
-													 intval($int->getVar(fldExceptions::SUB_TAG[2], false))),
-													 new \DateTimeZone('UTC'));
+			    									 intval(Util::mkTZOffset($int->getVar(fldExceptions::SUB_TAG[2], false), true))),
+			    									 new \DateTimeZone('UTC'));
 						} else {
 
 							$doc = new XML();
