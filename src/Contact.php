@@ -1161,7 +1161,7 @@ class Contact {
 	 *	@param	- self::C_NEW=New; self::C_UPD=Update; self::C_DEL=Delete
 	 *	$return - true=Ok; false=Error
 	 */
-	private function _chkCat(string $rid, ?XML $xml = null, int $mod): bool {
+	private function _chkCat(string $rid, ?XML $xml, int $mod): bool {
 
 		if ($this->_cnf->getVar(Config::DBG_SCRIPT) != 'Document') {
 			Msg::InfoMsg($this->_cats, 'New category list');
