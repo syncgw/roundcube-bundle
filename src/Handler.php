@@ -6,7 +6,7 @@ declare(strict_types=1);
  *
  *	@package	sync*gw
  *	@subpackage	RoundCube data base
- *	@copyright	(c) 2008 - 2025 Florian Daeumling, Germany. All right reserved
+ *	@copyright	(c) 2008 - 2026 Florian Daeumling, Germany. All right reserved
  * 	@license 	LGPL-3.0-or-later
  */
 
@@ -112,8 +112,6 @@ class Handler extends \syncgw\interface\mysql\Handler implements DBextHandler {
 
 			// set error filter
 			ErrorHandler::filter(E_NOTICE|E_DEPRECATED|E_WARNING, 'rcube_vcard.php');
-			ErrorHandler::filter(E_NOTICE|E_DEPRECATED|E_WARNING, 'bootstrap.php');
-			ErrorHandler::filter(E_NOTICE|E_DEPRECATED|E_WARNING, 'plugins/ident_switch');
 			ErrorHandler::filter(E_NOTICE|E_DEPRECATED|E_WARNING, 'plugins/globaladdressbook');
 			ErrorHandler::filter(E_NOTICE|E_DEPRECATED|E_WARNING, 'plugins/contextmenu_folder');
 			ErrorHandler::filter(E_NOTICE|E_DEPRECATED|E_WARNING, 'plugins/message_highlight');

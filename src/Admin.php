@@ -6,7 +6,7 @@ declare(strict_types=1);
  *
  *	@package	sync*gw
  *	@subpackage	RoundCube data base
- *	@copyright	(c) 2008 - 2025 Florian Daeumling, Germany. All right reserved
+ *	@copyright	(c) 2008 - 2026 Florian Daeumling, Germany. All right reserved
  * 	@license 	LGPL-3.0-or-later
  */
 
@@ -71,11 +71,15 @@ class Admin extends \syncgw\interface\mysql\Admin implements DBAdmin {
 			return true;
 
 		// get application root directory
-		$path = '../../..';
-		// check for hidden parameter
 		if ($c = $cnf->getVar(Config::RC_DIR))
 			$path = $c;
-		$path = realpath($path);
+		else {
+			$path = '.';
+			// workaround for changed RoundCube base directory
+			if (strpos(realpath($path), 'public_html'))
+				$path .= '/..';
+			$cnf->updVar(Config::RC_DIR, $path = realpath($path));
+		}
 
 		if (!file_exists($file = $path.'/config/config.inc.php')) {
 
